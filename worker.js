@@ -19,7 +19,7 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
     message.addData('title', 'un titulo');
     message.addData('message', 'un mensaje');
     message.addData('type', type);
-    message.addData('consultationId', 'consultationId');
+    message.addData('consultationId', consultationId);
 
     sender.sendNoRetry(message, { topic: '/topics/global' }, function (err, response) {
     	if(err) {
