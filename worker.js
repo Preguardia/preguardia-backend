@@ -12,22 +12,27 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
     console.log(data);
 
     var type = data.type;
+    var message = data.message;
     var consultationId = data.consultationId;
     var topic = data.topic;
 
     var message = new gcm.Message();
-    message.addData('title', 'un titulo');
-    message.addData('message', 'un mensaje');
+
     message.addData('type', type);
     message.addData('consultationId', consultationId);
 
-    sender.sendNoRetry(message, { topic: '/topics/global' }, function (err, response) {
-    	if(err) {
-            console.error(err);
-        } else {
-            console.log(response);
+    if (type = "new-consultation") {
+        message.addData('title', 'Nueva consulta médica');
+        message.addData('message', message);
+        
+        sender.sendNoRetry(message, { topic: '/topics/' + topic }, function (err, response) {
+        	if(err) {
+                console.error(err);
+            } else {
+                console.log(response);
 
-            resolve();
-        }
-    });
+                resolve();
+            }
+        });
+    }
 });
