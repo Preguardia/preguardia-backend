@@ -12,7 +12,7 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
     console.log(data);
 
     var type = data.type;
-    var message = data.message;
+    var content = data.message;
     var consultationId = data.consultationId;
     var topic = data.topic;
 
@@ -23,7 +23,7 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
 
     if (type = "new-consultation") {
         message.addData('title', 'Nueva consulta médica');
-        message.addData('message', message);
+        message.addData('message', content);
 
         sender.sendNoRetry(message, { topic: '/topics/medic' }, function (err, response) {
         	if(err) {
