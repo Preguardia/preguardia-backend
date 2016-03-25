@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "ejs": "2.3.3",
-    "express": "4.13.3"
+    "express": "4.13.3",
+    "firebase": "^2.4.1",
+    "firebase-queue": "^1.2.1"
   },
   "engines": {
     "node": "0.12.7"
