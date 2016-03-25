@@ -12,7 +12,8 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
     console.log(data);
 
     var message = new gcm.Message();
-    message.addData('key1', 'msg1');
+    message.addData('title', 'un titulo');
+    message.addData('message', 'un mensaje');
 
     sender.sendNoRetry(message, { topic: '/topics/global' }, function (err, response) {
     	if(err) {
