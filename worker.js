@@ -24,8 +24,8 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
     if (type = "new-consultation") {
         message.addData('title', 'Nueva consulta médica');
         message.addData('message', message);
-        
-        sender.sendNoRetry(message, { topic: '/topics/' + topic }, function (err, response) {
+
+        sender.sendNoRetry(message, { topic: '/topics/medic' }, function (err, response) {
         	if(err) {
                 console.error(err);
             } else {
