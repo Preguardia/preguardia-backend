@@ -10,7 +10,8 @@
     "ejs": "2.3.3",
     "express": "4.13.3",
     "firebase": "^2.4.1",
-    "firebase-queue": "^1.2.1"
+    "firebase-queue": "^1.2.1",
+    "node-gcm": "^0.14.0"
   },
   "engines": {
     "node": "0.12.7"
