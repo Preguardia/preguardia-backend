@@ -21,7 +21,7 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
     message.addData('type', type);
     message.addData('consultationId', consultationId);
 
-    if (type = "new-consultation") {
+    if (type = 'new-consultation') {
         message.addData('title', 'Nueva consulta médica');
         message.addData('message', content);
 
