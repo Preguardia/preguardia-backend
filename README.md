@@ -1,2 +1,3 @@
 # preguardia-backend
-#TO-DO: README.md
+
+Backend based on NodeJS running in Heroku.
