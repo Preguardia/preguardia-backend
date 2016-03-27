@@ -6,17 +6,17 @@ var gcm = require('node-gcm');
 var sender = new gcm.Sender('AIzaSyC6-cOT27aMoxhl-YDkZGJpdnU1cwanawg');
 
 var queueRef = new Firebase('https://medicapp.firebaseio.com/queue');
+var usersRef = new Firebase('https://medicapp.firebaseio.com/users');
 
 var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
+    var message = new gcm.Message();
+
     // Read and process task data
     console.log(data);
 
     var type = data.type;
-    var content = data.message;
+    var content = data.content;
     var consultationId = data.consultationId;
-    var topic = data.topic;
-
-    var message = new gcm.Message();
 
     message.addData('type', type);
     message.addData('consultationId', consultationId);
@@ -33,6 +33,28 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
 
                 resolve();
             }
+        });
+    } else if (type = 'consultation-approved') {
+        message.addData('title', 'Consulta aprovada');
+        message.addData('message', content);
+
+        var patientId = data.patientId;
+
+        // Retrieve GCM Token
+        ref.child(patientId).once("gcmRegisterId", function(data) {
+            var registrationTokens = [];
+            registrationTokens.push(data);
+
+            // Send notification for that Patient
+            sender.sendNoRetry(message, { registrationTokens: registrationTokens }, function (err, response) {
+                if(err) {
+                    console.error(err);
+                } else {
+                    console.log(response);
+
+                    resolve();
+                }
+            });
         });
     }
 });
