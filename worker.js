@@ -41,9 +41,11 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
         var patientId = data.patientId;
 
         // Retrieve GCM Token
-        ref.child(patientId).once("gcmRegisterId", function(data) {
+        usersRef.child(patientId).once("gcmRegisterId", function(data) {
             var registrationTokens = [];
             registrationTokens.push(data);
+
+            console.log("User regId found: " + data);
 
             // Send notification for that Patient
             sender.sendNoRetry(message, { registrationTokens: registrationTokens }, function (err, response) {
