@@ -28,7 +28,7 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
         console.log("> New Consultation");
 
         sender.sendNoRetry(message, { topic: '/topics/medic' }, function (err, response) {
-        	if(err) {
+            if(err) {
                 console.error(err);
             } else {
                 console.log(response);
@@ -45,7 +45,7 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
         var patientId = data.patientId;
 
         // Retrieve GCM Token
-        usersRef.child(patientId).once("gcmRegisterId", function(data) {
+        usersRef.child(patientId).child("gcmRegisterId").once("value", function(data) {
             var registrationTokens = [];
             registrationTokens.push(data);
 
