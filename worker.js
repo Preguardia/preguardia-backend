@@ -12,7 +12,7 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
     var message = new gcm.Message();
 
     // Read and process task data
-    console.log(data);
+    //console.log(data);
 
     var type = data.type;
     var content = data.content;
