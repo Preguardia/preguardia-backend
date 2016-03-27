@@ -25,6 +25,8 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
         message.addData('title', 'Nueva consulta médica');
         message.addData('message', content);
 
+        console.log("> New Consultation");
+
         sender.sendNoRetry(message, { topic: '/topics/medic' }, function (err, response) {
         	if(err) {
                 console.error(err);
@@ -37,6 +39,8 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
     } else if (type = 'consultation-approved') {
         message.addData('title', 'Consulta aprovada');
         message.addData('message', content);
+
+        console.log("> Consultation Approved");
 
         var patientId = data.patientId;
 
