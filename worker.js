@@ -29,9 +29,9 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
 
         sender.sendNoRetry(message, { topic: '/topics/medic' }, function (err, response) {
             if(err) {
-                console.error(err);
+                console.error("< New Consultation - Notification not sent - Error: " + err);
             } else {
-                console.log(response);
+                console.log("< New Consultation - Notification sent - Response: " + response);
 
                 resolve();
             }
@@ -49,7 +49,7 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
             var registerId = data.val();
             var registrationTokens = [];
 
-            console.log("User regId found: " + registerId);
+            console.log("- User regId found: " + registerId);
 
             // Add Register ID
             registrationTokens.push(registerId);
@@ -57,9 +57,9 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
             // Send notification for that Patient
             sender.sendNoRetry(message, { registrationTokens: registrationTokens }, function (err, response) {
                 if(err) {
-                    console.error(err);
+                    console.error("< Consultation Approved - Notification not sent - Error: " + err);
                 } else {
-                    console.log(response);
+                    console.log("< Consultation Approved - Notification sent - Response: " + response);
 
                     resolve();
                 }
