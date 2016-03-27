@@ -37,15 +37,15 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
 
         sender.sendNoRetry(message, { topic: GCM_TOPIC_MEDIC }, function (err, response) {
             if(err) {
-                console.error("< New Consultation - Notification not sent - Error: " + err);
+                console.error("< New Consultation - Notification not sent - Error: " + err.val());
             } else {
-                console.log("< New Consultation - Notification sent - Response: " + response);
+                console.log("< New Consultation - Notification sent - Response: " + response.val());
 
                 resolve();
             }
         });
     } else if (type == 'consultation-approved') {
-        message.addData('title', 'Consulta aprovada');
+        message.addData('title', 'Consulta aprobada');
         message.addData('message', content);
 
         console.log("> Consultation Approved");
