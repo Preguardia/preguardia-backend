@@ -37,9 +37,9 @@ var queue = new Queue(queueRef, function(data, progress, resolve, reject) {
 
         sender.sendNoRetry(message, { topic: GCM_TOPIC_MEDIC }, function (err, response) {
             if(err) {
-                console.error("< New Consultation - Notification not sent - Error: " + err;
+                console.error("< New Consultation - Notification not sent - Error: " + err);
             } else {
-                console.log("< New Consultation - Notification sent - Response: " + response;
+                console.log("< New Consultation - Notification sent - Response: " + response);
 
                 resolve();
             }
