@@ -1,7 +1,7 @@
 var Queue = require('firebase-queue');
 var Firebase = require('firebase');
 var gcm = require('node-gcm');
-
+ 
 const FIREBASE_URL = 'https://medicapp.firebaseio.com';
 const FIREBASE_USERS = 'users';
 const FIREBASE_QUEUE = 'queue';
