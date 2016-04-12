@@ -11,6 +11,8 @@ const FIREBASE_TASK_CONSULTATION_NEW = 'new-consultation';
 const FIREBASE_TASK_CONSULTATION_APPROVED = 'consultation-approved';
 const FIREBASE_TASK_MESSAGE_NEW = 'message-new';
 
+const FIREBASE_CONSULTATION_ID = 'consultationId';
+
 const GCM_SENDER_ID = 'AIzaSyC6-cOT27aMoxhl-YDkZGJpdnU1cwanawg';
 const GCM_TOPIC_MEDIC = '/topics/medic';
 
@@ -31,7 +33,7 @@ var queue = new Queue(queueRef, function (data, progress, resolve, reject) {
     var consultationId = data.consultationId;
 
     message.addData('type', type);
-    message.addData('consultationId', consultationId);
+    message.addData(FIREBASE_CONSULTATION_ID, consultationId);
 
     // Handle each type of Task
     switch (type) {
