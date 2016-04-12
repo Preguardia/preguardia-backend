@@ -88,8 +88,34 @@ var queue = new Queue(queueRef, function (data, progress, resolve, reject) {
             break;
 
         case FIREBASE_TASK_MESSAGE_NEW:
+            var userId = data.userId;
 
             console.log("> New Message");
+
+            message.addData('title', 'Nuevo mensaje');
+            message.addData('message', content);
+
+            // Retrieve GCM Token for User
+            usersRef.child(userId).child(FIREBASE_USER_REGISTER_ID).once("value", function (data) {
+                var registerId = data.val();
+                var registrationTokens = [];
+
+                console.log("- User regId found: " + registerId);
+
+                // Add Register ID
+                registrationTokens.push(registerId);
+
+                // Send notification for that Patient
+                sender.sendNoRetry(message, {registrationTokens: registrationTokens}, function (err, response) {
+                    if (err) {
+                        console.error("< New Message - Notification not sent - Error: " + err);
+                    } else {
+                        console.log("< New Message - Notification sent - Response: " + response);
+
+                        resolve();
+                    }
+                });
+            });
 
             break;
 
