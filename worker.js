@@ -7,8 +7,9 @@ const FIREBASE_USERS = 'users';
 const FIREBASE_QUEUE = 'queue';
 const FIREBASE_USER_REGISTER_ID = 'gcmRegisterId';
 
-const FIREBASE_TASK_CONSULTATION_NEW = 'new-consultation';
+const FIREBASE_TASK_CONSULTATION_CREATED = 'new-consultation';
 const FIREBASE_TASK_CONSULTATION_APPROVED = 'consultation-approved';
+const FIREBASE_TASK_CONSULTATION_CLOSED = 'consultation-closed';
 const FIREBASE_TASK_MESSAGE_NEW = 'message-new';
 
 const FIREBASE_CONSULTATION_ID = 'consultationId';
@@ -32,13 +33,15 @@ var queue = new Queue(queueRef, function (data, progress, resolve, reject) {
     var type = data.type;
     var content = data.content;
     var consultationId = data.consultationId;
+    var patientId = data.patientId;
+    var userId = data.userId;
+    var medicName = "Juan Benitez";
 
     // Handle each type of Task
     switch (type) {
 
-        case FIREBASE_TASK_CONSULTATION_NEW:
-
-            console.log("> New Consultation");
+        case FIREBASE_TASK_CONSULTATION_CREATED:
+            console.log("> Consultation Created");
 
             message.addData(GCM_NOTIFICATION_TYPE, type);
             message.addData(GCM_NOTIFICATION_TITLE, 'Nueva consulta médica');
@@ -58,8 +61,6 @@ var queue = new Queue(queueRef, function (data, progress, resolve, reject) {
             break;
 
         case FIREBASE_TASK_CONSULTATION_APPROVED:
-            var patientId = data.patientId;
-
             console.log("> Consultation Approved");
 
             message.addData(GCM_NOTIFICATION_TYPE, type);
@@ -91,9 +92,39 @@ var queue = new Queue(queueRef, function (data, progress, resolve, reject) {
 
             break;
 
-        case FIREBASE_TASK_MESSAGE_NEW:
-            var userId = data.userId;
+        case FIREBASE_TASK_CONSULTATION_CLOSED:
+            console.log("> Consultation Closed");
 
+            message.addData(GCM_NOTIFICATION_TYPE, type);
+            message.addData(GCM_NOTIFICATION_TITLE, 'Consulta cerrada');
+            message.addData(GCM_NOTIFICATION_MESSAGE, medicName + ' cerró la consulta médica');
+            message.addData(FIREBASE_CONSULTATION_ID, consultationId);
+
+            // Retrieve GCM Token for User
+            usersRef.child(userId).child(FIREBASE_USER_REGISTER_ID).once("value", function (data) {
+                var registerId = data.val();
+                var registrationTokens = [];
+
+                console.log("- User regId found: " + registerId);
+
+                // Add Register ID
+                registrationTokens.push(registerId);
+
+                // Send notification for that Patient
+                sender.sendNoRetry(message, {registrationTokens: registrationTokens}, function (err, response) {
+                    if (err) {
+                        console.error("< Consultation Closed - Notification not sent - Error: " + err);
+                    } else {
+                        console.log("< Consultation Closed - Notification sent - Response: " + response);
+
+                        resolve();
+                    }
+                });
+            });
+
+            break;
+
+        case FIREBASE_TASK_MESSAGE_NEW:
             console.log("> New Message");
 
             message.addData(GCM_NOTIFICATION_TYPE, type);
